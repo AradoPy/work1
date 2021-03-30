@@ -57,10 +57,19 @@ def sample(property, type):
     for i in collection_currency.find({property: type}):
         new_features.append(jsn.Feature(geometry=i['geometry'], properties=i['properties']))
     new_feature_collection = jsn.FeatureCollection(features=new_features)
-    with open('Sample'+str(rd.choice(range(1000,1000000))), 'w') as r:
+    with open('Sample'+str(rd.choice(range(1000,10000000))), 'w') as r:
         jsn.dump(new_feature_collection, r)
 
 list = reader()
 list2geojson(list)
 # load2mongodb()
 sample('properties.type','rur')
+sample('properties.type','hway')
+sample('properties.long', 150)
+sample('properties.long', 100)
+sample('properties.face', 'crt')
+sample('properties.face', 'gra')
+sample('properties.width', 12)
+sample('properties.face', 'asp')
+sample('properties.long', 125)
+sample('properties.type', 'urb')
