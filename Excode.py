@@ -13,11 +13,11 @@ def reader():
     y = []
     for i in range(1, 129):
             a = sheet.cell(row=i+1, column=2).value
-            X.append(float(a))
+            x.append(float(a))
     for i in range(1, 129):
             a = sheet.cell(row=i+1, column=3).value
-            Y.append(float(a))
-    coor = zip(Y, X)
+            y.append(float(a))
+    coor = zip(y, x)
     list_coor = list(coor)
     return list_coor
 
@@ -39,5 +39,15 @@ def list2geojson(list):
     with open('JSON_for_DB.json', 'w') as f:
         jsn.dump(features, f)
 
+def load2mongodb():
+    client = MongoClient('localhost', 27017)
+    db = client['MyDB']
+    collection_currency = db['MyColl']
+
+    with open('JSON_for_DB.json') as f:
+        file_data = jsn.load(f)
+    collection_currency.insert_many(file_data)
+
 list = reader()
 list2geojson(list)
+# load2mongodb()
