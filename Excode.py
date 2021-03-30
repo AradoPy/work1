@@ -47,7 +47,20 @@ def load2mongodb():
     with open('JSON_for_DB.json') as f:
         file_data = jsn.load(f)
     collection_currency.insert_many(file_data)
+    client.close()
+
+def sample(property, type):
+    client = MongoClient('localhost', 27017)
+    db = client['MyDB']
+    collection_currency = db['MyColl']
+    new_features = []
+    for i in collection_currency.find({property: type}):
+        new_features.append(jsn.Feature(geometry=i['geometry'], properties=i['properties']))
+    new_feature_collection = jsn.FeatureCollection(features=new_features)
+    with open('Sample'+str(rd.choice(range(1000,1000000))), 'w') as r:
+        jsn.dump(new_feature_collection, r)
 
 list = reader()
 list2geojson(list)
 # load2mongodb()
+sample('properties.type','rur')
